@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
-contract LuckyDip is IERC20, Ownable {
+contract Token1 is IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
 
@@ -19,8 +19,8 @@ contract LuckyDip is IERC20, Ownable {
     uint256 private _totalSupply = 100000000 * 10**_decimals;
 
     //Tax Receiving adresses
-    address public constant developerWallet = 0x000000000000000000000000000000000000dead;
-    address public constant lotteryFundWallet = 0x000000000000000000000000000000000000dead;
+    address public constant taxWallet1 = 0x000000000000000000000000000000000000dead;
+    address public constant taxWallet2 = 0x000000000000000000000000000000000000dead;
 
     //Tax amounts in percentage
     uint256 private _taxFeePercent = 1;
@@ -133,12 +133,12 @@ contract LuckyDip is IERC20, Ownable {
         _balances[sender] = _balances[sender].sub(amount);
         _balances[recipient] = _balances[recipient].add(finalAmount);
 
-        _balances[developerWallet] = _balances[developerWallet].add(taxFee);
-        _balances[lotteryFundWallet] = _balances[lotteryFundWallet].add(lotteryFundFee);
+        _balances[taxWallet1] = _balances[taxWallet1].add(taxFee);
+        _balances[taxWallet2] = _balances[taxWallet2].add(lotteryFundFee);
 
         emit Transfer(sender, recipient, finalAmount);
-        emit Transfer(sender, developerWallet, taxFee);
-        emit Transfer(sender, lotteryFundWallet, lotteryFundFee);
+        emit Transfer(sender, taxWallet1, taxFee);
+        emit Transfer(sender, taxWallet2, lotteryFundFee);
     }
 
     function _approve(
